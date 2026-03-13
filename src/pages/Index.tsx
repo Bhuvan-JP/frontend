@@ -99,14 +99,14 @@ const Index = () => {
               lockerId={lockerId}
               remainingTime="1h 23m"
               location="Block B, Floor 1"
-              hasExtraCharge={false}
-              extraAmount={0}
-              onProceed={() => setScreen("pickup-unlock")}
+              hasExtraCharge={true}
+              extraAmount={getPrice()}
+              onProceed={() => setScreen("pickup-payment")}
               onBack={() => setScreen("pickup-auth")}
             />
           )}
           {screen === "pickup-payment" && (
-            <Payment amount={30} onSuccess={() => setScreen("pickup-unlock")} onBack={() => setScreen("pickup-details")} step={3} totalSteps={4} />
+            <Payment amount={getPrice()} onSuccess={() => setScreen("pickup-unlock")} onBack={() => setScreen("pickup-details")} step={3} totalSteps={4} />
           )}
           {screen === "pickup-unlock" && (
             <UnlockLocker lockerId={lockerId} onDone={reset} />
