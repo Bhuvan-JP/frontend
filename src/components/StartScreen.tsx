@@ -14,11 +14,11 @@ const StartScreen = ({ onStore, onPickup }: StartScreenProps) => (
     </div>
 
     <div className="flex gap-6">
-      <button onClick={onStore} className="btn-locker bg-blue-600 text-primary-foreground flex flex-col items-center gap-3 min-w-[200px]">
+      <button onClick={onStore} className="btn-locker bg-primary text-primary-foreground flex flex-col items-center gap-3 min-w-[200px]">
         <Package className="w-8 h-8" />
         Store Item
       </button>
-      <button onClick={onPickup} className="btn-locker bg-blue-600 text-primary-foreground border border-border hover:border-primary/40 flex flex-col items-center gap-3 min-w-[200px]">
+      <button onClick={onPickup} className="btn-locker bg-primary text-primary-foreground border border-border hover:border-primary/40 flex flex-col items-center gap-3 min-w-[200px]">
         <PackageOpen className="w-8 h-8" />
         Pick Up Item
       </button>
