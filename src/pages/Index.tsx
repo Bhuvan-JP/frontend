@@ -77,10 +77,7 @@ const Index = () => {
             <SelectLocker selected={lockerSize} onSelect={(s) => { setLockerSize(s); setScreen("store-time"); }} onBack={() => setScreen("store-password")} />
           )}
           {screen === "store-time" && (
-            <SelectTime lockerSize={lockerSize!} selectedHours={hours} onSelect={setHours} onBack={() => setScreen("store-locker")} onContinue={() => setScreen("store-payment")} />
-          )}
-          {screen === "store-payment" && (
-            <Payment amount={getPrice()} onSuccess={() => setScreen("store-allocated")} onBack={() => setScreen("store-time")} />
+            <SelectTime lockerSize={lockerSize!} selectedHours={hours} onSelect={setHours} onBack={() => setScreen("store-locker")} onContinue={() => setScreen("store-allocated")} />
           )}
           {screen === "store-allocated" && (
             <LockerAllocated lockerId={lockerId} onDone={reset} />
@@ -102,14 +99,14 @@ const Index = () => {
               lockerId={lockerId}
               remainingTime="1h 23m"
               location="Block B, Floor 1"
-              hasExtraCharge={false}
-              extraAmount={0}
-              onProceed={() => setScreen("pickup-unlock")}
+              hasExtraCharge={true}
+              extraAmount={getPrice()}
+              onProceed={() => setScreen("pickup-payment")}
               onBack={() => setScreen("pickup-auth")}
             />
           )}
           {screen === "pickup-payment" && (
-            <Payment amount={30} onSuccess={() => setScreen("pickup-unlock")} onBack={() => setScreen("pickup-details")} step={3} totalSteps={4} />
+            <Payment amount={getPrice()} onSuccess={() => setScreen("pickup-unlock")} onBack={() => setScreen("pickup-details")} step={3} totalSteps={4} />
           )}
           {screen === "pickup-unlock" && (
             <UnlockLocker lockerId={lockerId} onDone={reset} />
