@@ -12,6 +12,7 @@ interface OtpVerifyProps {
 const OtpVerify = ({ phone, onVerify, onBack, step = 2, totalSteps = 7 }: OtpVerifyProps) => {
   const [otp, setOtp] = useState(Array(6).fill(""));
   const [countdown, setCountdown] = useState(30);
+  const [isAgreed, setIsAgreed] = useState(false);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   useEffect(() => {
@@ -55,6 +56,7 @@ const OtpVerify = ({ phone, onVerify, onBack, step = 2, totalSteps = 7 }: OtpVer
             />
           ))}
         </div>
+
         <div className="text-center text-sm text-muted-foreground">
           {countdown > 0 ? (
             <span>Resend in {countdown}s</span>
@@ -62,10 +64,24 @@ const OtpVerify = ({ phone, onVerify, onBack, step = 2, totalSteps = 7 }: OtpVer
             <button onClick={() => setCountdown(30)} className="text-primary font-medium hover:underline">Resend OTP</button>
           )}
         </div>
+
+        <div className="flex items-center gap-3 justify-center">
+          <input
+            type="checkbox"
+            id="terms-agreement"
+            checked={isAgreed}
+            onChange={(e) => setIsAgreed(e.target.checked)}
+            className="w-4 h-4 text-primary bg-secondary border-border rounded focus:ring-primary focus:ring-2 cursor-pointer transition-all"
+          />
+          <label htmlFor="terms-agreement" className="text-sm text-muted-foreground cursor-pointer select-none">
+            I agree to the Terms and Conditions
+          </label>
+        </div>
+
         <button
-          disabled={!isFilled}
+          disabled={!isFilled || !isAgreed}
           onClick={onVerify}
-          className="w-full btn-locker bg-primary text-primary-foreground disabled:opacity-40 disabled:hover:shadow-none disabled:hover:translate-y-0"
+          className="w-full btn-locker bg-primary text-primary-foreground disabled:opacity-40 disabled:hover:shadow-none disabled:hover:translate-y-0 disabled:cursor-not-allowed"
         >
           Verify
         </button>

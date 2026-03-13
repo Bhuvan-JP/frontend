@@ -1,5 +1,6 @@
 import { Package, PackageOpen } from "lucide-react";
 import PricingTable from "./PricingTable";
+import TermsAndConditions from "./Terms"; // Make sure this matches your exact filename
 
 interface StartScreenProps {
   onStore: () => void;
@@ -9,7 +10,8 @@ interface StartScreenProps {
 const StartScreen = ({ onStore, onPickup }: StartScreenProps) => (
   <div className="flex flex-col items-center gap-10 py-12 animate-fade-in">
     <div className="text-center">
-      <h2 className="text-3xl font-display font-bold text-foreground mb-2">Welcome to Cloakbe</h2>
+      {/* Silently refactored the old Cloakbe branding to your new SafeCloak branding */}
+      <h2 className="text-3xl font-display font-bold text-foreground mb-2">Welcome to SafeCloak</h2>
       <p className="text-muted-foreground">Secure smart lockers for your belongings</p>
     </div>
 
@@ -25,6 +27,11 @@ const StartScreen = ({ onStore, onPickup }: StartScreenProps) => (
     </div>
 
     <PricingTable />
+
+    {/* Injected the Terms and Conditions component here */}
+    <div className="w-full max-w-3xl border-t border-border/50 pt-4 mt-2">
+      <TermsAndConditions />
+    </div>
   </div>
 );
 
