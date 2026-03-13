@@ -77,10 +77,7 @@ const Index = () => {
             <SelectLocker selected={lockerSize} onSelect={(s) => { setLockerSize(s); setScreen("store-time"); }} onBack={() => setScreen("store-password")} />
           )}
           {screen === "store-time" && (
-            <SelectTime lockerSize={lockerSize!} selectedHours={hours} onSelect={setHours} onBack={() => setScreen("store-locker")} onContinue={() => setScreen("store-payment")} />
-          )}
-          {screen === "store-payment" && (
-            <Payment amount={getPrice()} onSuccess={() => setScreen("store-allocated")} onBack={() => setScreen("store-time")} />
+            <SelectTime lockerSize={lockerSize!} selectedHours={hours} onSelect={setHours} onBack={() => setScreen("store-locker")} onContinue={() => setScreen("store-allocated")} />
           )}
           {screen === "store-allocated" && (
             <LockerAllocated lockerId={lockerId} onDone={reset} />
