@@ -1,13 +1,18 @@
-import logo from "@/assets/cloakbe-logo.png";
+import React from "react";
+// Import the image directly from your assets folder
+import logo from "@/assets/safeclock.png";
 
-const Header = () => (
-  <header className="w-full py-4 px-8 flex items-center gap-3 border-b border-border/50 bg-card/60 backdrop-blur-sm">
-    <img src={logo} alt="Cloakbe" className="h-10 w-10" />
-    <div>
-      <h1 className="text-xl font-bold font-display text-foreground tracking-tight">Cloakbe</h1>
-      <p className="text-xs text-muted-foreground">Smart Locker System</p>
-    </div>
-  </header>
-);
+const Header = () => {
+  return (
+    <header className="w-full py-4 px-6 bg-background border-b border-border shadow-sm flex items-center justify-center sm:justify-start">
+      {/* The Logo Image */}
+      <img
+        src={logo}
+        alt="Cloakbe"
+        className="h-8 sm:h-10 object-contain"
+      />
+    </header>
+  );
+};
 
 export default Header;

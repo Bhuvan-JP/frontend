@@ -37,20 +37,32 @@ type Screen =
 const Index = () => {
   const [screen, setScreen] = useState<Screen>("home");
   const [phone, setPhone] = useState("");
-  const [lockerSize, setLockerSize] = useState<"Small" | "Medium" | "Large" | null>(null);
+  const [selectedLocker, setSelectedLocker] = useState<string | null>(null);
   const [hours, setHours] = useState<number | null>(null);
 
-  const getPrice = () => {
-    if (!lockerSize || !hours) return 0;
-    return PRICES[lockerSize][DURATION_INDEX[hours]];
+  // HELPER: Derives the size based on the letter prefix from your new custom grid
+  // 'C' boxes are Large, 'B' boxes are Medium, 'A' boxes are Small
+  const getDerivedSize = (boxId: string | null): "Small" | "Medium" | "Large" | null => {
+    if (!boxId) return null;
+    const letter = boxId.split('-')[0];
+    if (letter === 'C') return "Large";
+    if (letter === 'B') return "Medium";
+    return "Small";
   };
 
-  const lockerId = "B-4";
+  const getPrice = () => {
+    const size = getDerivedSize(selectedLocker);
+    if (!size || !hours) return 0;
+    return PRICES[size][DURATION_INDEX[hours]];
+  };
+
+  // Uses the actual selected box ID instead of a hardcoded value
+  const activeLockerId = selectedLocker || "A-1";
 
   const reset = () => {
     setScreen("home");
     setPhone("");
-    setLockerSize(null);
+    setSelectedLocker(null);
     setHours(null);
   };
 
@@ -74,13 +86,23 @@ const Index = () => {
             <CreatePassword onSubmit={() => setScreen("store-locker")} onBack={() => setScreen("store-otp")} />
           )}
           {screen === "store-locker" && (
-            <SelectLocker selected={lockerSize} onSelect={(s) => { setLockerSize(s); setScreen("store-time"); }} onBack={() => setScreen("store-password")} />
+            <SelectLocker
+              selected={selectedLocker}
+              onSelect={(s) => { setSelectedLocker(s); setScreen("store-time"); }}
+              onBack={() => setScreen("store-password")}
+            />
           )}
           {screen === "store-time" && (
-            <SelectTime lockerSize={lockerSize!} selectedHours={hours} onSelect={setHours} onBack={() => setScreen("store-locker")} onContinue={() => setScreen("store-allocated")} />
+            <SelectTime
+              lockerSize={getDerivedSize(selectedLocker)!}
+              selectedHours={hours}
+              onSelect={setHours}
+              onBack={() => setScreen("store-locker")}
+              onContinue={() => setScreen("store-allocated")}
+            />
           )}
           {screen === "store-allocated" && (
-            <LockerAllocated lockerId={lockerId} onDone={reset} />
+            <LockerAllocated lockerId={activeLockerId} onDone={reset} />
           )}
 
           {/* PICKUP FLOW */}
@@ -96,7 +118,7 @@ const Index = () => {
           )}
           {screen === "pickup-details" && (
             <PickupDetails
-              lockerId={lockerId}
+              lockerId={activeLockerId}
               remainingTime="1h 23m"
               location="Block B, Floor 1"
               hasExtraCharge={true}
@@ -109,7 +131,7 @@ const Index = () => {
             <Payment amount={getPrice()} onSuccess={() => setScreen("pickup-unlock")} onBack={() => setScreen("pickup-details")} step={3} totalSteps={4} />
           )}
           {screen === "pickup-unlock" && (
-            <UnlockLocker lockerId={lockerId} onDone={reset} />
+            <UnlockLocker lockerId={activeLockerId} onDone={reset} />
           )}
         </div>
       </main>
